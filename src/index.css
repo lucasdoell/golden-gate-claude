@@ -1,0 +1,117 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-fog: #e7e5e0;
+  --color-navy: #14243a;
+  --color-orange: #c0362c;
+  --color-steel: #6e7a88;
+  --color-gold: #c9a24a;
+  --color-deepfog: #c9cdd2;
+
+  --font-display: 'Limelight', serif;
+  --font-sans: 'Josefin Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* Bridge Intensity drives these; slides use the semantic names. */
+@theme inline {
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-accent: var(--accent);
+  --color-label: var(--label);
+  --color-hl: var(--hl);
+  --color-hl-ink: var(--hl-ink);
+}
+
+[data-intensity] {
+  --surface: var(--color-fog);
+  --ink: var(--color-navy);
+  --accent: var(--color-orange);
+  --label: var(--color-steel);
+  --hl: var(--color-orange);
+  --hl-ink: var(--color-fog);
+  background-color: var(--surface);
+  color: var(--ink);
+  transition:
+    background-color 0.8s ease,
+    color 0.8s ease;
+}
+[data-intensity='1'] {
+  --label: var(--color-orange);
+}
+[data-intensity='2'] {
+  --surface: #dcdddd;
+  --label: var(--color-orange);
+}
+[data-intensity='3'] {
+  --surface: var(--color-orange);
+  --ink: var(--color-fog);
+  --accent: var(--color-navy);
+  --label: var(--color-fog);
+  --hl: var(--color-navy);
+  --hl-ink: var(--color-fog);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  background: #0b1420;
+  overflow: hidden;
+}
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+@utility kicker {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--label);
+}
+
+/* Punchline highlight: an orange bar sweeps across the phrase. */
+.sweep {
+  background-image: linear-gradient(var(--hl), var(--hl));
+  background-repeat: no-repeat;
+  background-size: 0% 100%;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0 0.12em;
+  margin: 0 -0.12em;
+  transition:
+    background-size 0.7s cubic-bezier(0.6, 0, 0.2, 1),
+    color 0.4s ease 0.2s;
+}
+.sweep[data-on='true'] {
+  background-size: 100% 100%;
+  color: var(--hl-ink);
+}
+
+.caret {
+  display: inline-block;
+  width: 0.08em;
+  height: 1em;
+  margin-left: 0.06em;
+  vertical-align: -0.12em;
+  background: var(--accent);
+  animation: blink 1s steps(1) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sweep {
+    transition: none;
+  }
+  .caret {
+    animation: none;
+  }
+}
